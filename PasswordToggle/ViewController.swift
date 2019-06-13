@@ -21,14 +21,16 @@ class ViewController: UIViewController {
 
 extension UITextField {
     func togglePasswordVisibility() {
-        isSecureTextEntry = !isSecureTextEntry
-        if let existingText = text, isSecureTextEntry {
-            text = nil;
-            insertText(existingText)
+        if let selectedRange = self.selectedTextRange {
+            isSecureTextEntry = !isSecureTextEntry
+            if let existingText = text, isSecureTextEntry {
+                text = nil;
+                insertText(existingText)
+            }
+            if let newPosition = self.position(from: selectedRange.start, offset: 0) {
+                self.selectedTextRange = self.textRange(from: newPosition, to: newPosition)
+            }
         }
-        if let existingSelectedTextRange = selectedTextRange {
-            selectedTextRange = nil
-            selectedTextRange = existingSelectedTextRange
-        }
+        
     }
 }
